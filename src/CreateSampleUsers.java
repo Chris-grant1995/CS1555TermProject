@@ -7,6 +7,7 @@ import java.util.*;
 public class CreateSampleUsers {
     public static void main(String[] args){
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<String>friends = new ArrayList<>();
         String[] fnames = {"James","John", "Robert","Michael",
                 "William","David", "Richard","Charles",
                 "Joseph","Thomas","Christopher","Daniel",
@@ -35,12 +36,30 @@ public class CreateSampleUsers {
                 lname = lnames[rand.nextInt(lnames.length)];
                 name = fname + " " + lname;
             }
+            names.add(name);
             String email = fname+lname + "@gmail.com";
             statement+= "\'" + name + "\', \'" + email + "\', TIMESTAMP \'";
             statement += login.format(dobC.getTime()).toString() + "\',TIMESTAMP \'";
             statement+=login.format(loginC.getTime()).toString() + "\');";
             System.out.println(statement);
             dobC.add(Calendar.DATE, 1);
+        }
+        for(int i =0; i<200; i++){
+            String statement = "INSERT INTO Friendships VALUES(";
+            String f1 = rand.nextInt(names.size()) + "";
+            String f2 = rand.nextInt(names.size()) + "";
+            String friend = f1  + ", " + f2;
+            while (friends.contains(friend) || f1.equals(f2)){
+                 f1 = rand.nextInt(names.size()) + "";
+                 f2 = rand.nextInt(names.size()) + "";
+                 friend = f1  + ", " + f2;
+            }
+            friends.add(friend);
+            friend = f2  + ", " + f1;
+            friends.add(friend);
+            Boolean confirmed = rand.nextBoolean();
+            statement+= " " + friend + ", " + confirmed + " );";
+            System.out.println(statement);
         }
     }
 }
