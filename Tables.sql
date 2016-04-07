@@ -20,18 +20,26 @@ CREATE SEQUENCE UsersSEQ
 
 
 CREATE TABLE Friendships(
-  userID1 NUMBER,
-  userID2 NUMBER,
-  confirmed BOOLEAN,
+  senID NUMBER NOT NULL,
+  recID NUMBER NOT NULL,
+  confirmed BOOLEAN NOT NULL,
   PRIMARY KEY (userID1,userID2),
-  FOREIGN KEY(userID1) references Users(userID),
-  FOREIGN KEY(userID2) references Users(userID)
+  FOREIGN KEY(senID) references Users(userID),
+  FOREIGN KEY(recID) references Users(userID)
 );
 CREATE TABLE Groups(
-  name VARCHAR2(30) PRIMARY KEY,
+  groupID NUMBER PRIMARY KEY
+  name VARCHAR2(30),
   description VARCHAR2(100),
   maxMems NUMBER NOT NULL,
   members VARCHAR2(3000) NOT NULL -- Not sure if this is the best way to store this
+);
+CREATE TABLE Membership (
+  groupID NUMBER NOT NULL,
+  userID NUMBER NOT NULL,
+  PRIMARY KEY (groupID,userID),
+  FOREIGN KEY(groupID) references Groups(groupID),
+  FOREIGN KEY(userID) references Users(userID)
 );
 CREATE Table Messages(
   msgID NUMBER PRIMARY KEY,
