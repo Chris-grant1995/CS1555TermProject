@@ -6,12 +6,42 @@ CREATE TABLE Users(
   dob TIMESTAMP NOT NULL,
   lastLogin TIMESTAMP
 );
+CREATE SEQUENCE UsersSEQ
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 100;
+
+  CREATE OR REPLACE TRIGGER UserIDTrig
+    BEFORE INSERT ON Users
+    FOR EACH ROW
+  BEGIN
+    :new.userID := UsersSEQ.nextval;
+  END;
+
 
 CREATE TABLE Friendships(
   userID1 NUMBER,
   userID2 NUMBER,
   confirmed BOOLEAN,
-  PRIMARY KEY (userID1,userID2)
+  PRIMARY KEY (userID1,userID2),
+  FOREIGN KEY(userID1) references Users(userID),
+  FOREIGN KEY(userID2) references Users(userID)
+);
+CREATE TABLE Groups(
+  name VARCHAR2(30) PRIMARY KEY,
+  description VARCHAR2(100),
+  maxMems NUMBER NOT NULL,
+  members VARCHAR2(3000) NOT NULL -- Not sure if this is the best way to store this
+);
+CREATE Table Messages(
+  msgID NUMBER PRIMARY KEY,
+  recID NUMBER NOT NULL,
+  senID NUMBER NOT NULL,
+  subj VARCHAR2(30),
+  msgTxt VARCHAR2(100) NOT NULL,
+  dateSent TIMESTAMP NOT NULL,
+  FOREIGN KEY(recID) references Users(userID),
+  FOREIGN KEY(senID) references Users(userID)
 );
 
 INSERT INTO Users VALUES(0,'Mark Robinson', 'MarkRobinson@gmail.com', TIMESTAMP '2016-04-07 11:54:39',TIMESTAMP '2016-04-06 11:54:39');
