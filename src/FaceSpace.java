@@ -113,6 +113,59 @@ public class FaceSpace {
         return flag;
     }
 
+    public String getUserFromUserID(int userID) throws SQLException {
+        String statement = "SELECT * FROM Users WHERE userID = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1, userID);
+        resultSet = preparedStatement.executeQuery();
+        String result = "";
+
+        if (resultSet.next()) {
+            result = resultSet.getInt(1) + "\t" + resultSet.getString(2) + "\t" + resultSet.getString(3) +"\t" + resultSet.getString(4);
+        }
+
+        return result;
+    }
+
+    public ArrayList<Integer> getPendingFriendsUserIDs(int userID) throws SQLException {
+        String statement = "SELECT * FROM Friendships WHERE (senID = ?) OR (recID = ?)";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1, userID);
+        resultSet = preparedStatement.executeQuery();
+
+        ArrayList<Integer> results = new ArrayList<>();
+        while (resultSet.next()) {
+            if  (resultSet.getInt(3) == 1) {
+                continue;
+            }
+            int senID = resultSet.getInt(1);
+            int recID = resultSet.getInt(2);
+
+            results.add((senID == userID) ? recID : senID);
+        }
+
+        return results;
+    }
+
+    public ArrayList<Integer> getFriendsUserIDs(int userID) throws SQLException {
+        String statement = "SELECT * FROM Friendships WHERE (senID = ?) OR (recID = ?)";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1, userID);
+        resultSet = preparedStatement.executeQuery();
+
+        ArrayList<Integer> results = new ArrayList<>();
+        while (resultSet.next()) {
+            if  (resultSet.getInt(3) != 1) {
+                continue;
+            }
+            int senID = resultSet.getInt(1);
+            int recID = resultSet.getInt(2);
+
+            results.add((senID == userID) ? recID : senID);
+        }
+
+        return results;
+    }
 
     public void done(){
         try {
