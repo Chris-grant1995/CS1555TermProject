@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -58,7 +59,56 @@ public class Main {
 
         }
     }
-    public static void loggedIn(){
-        System.out.println("Welcome " + name + " You are logged in. Exiting");
+    public static void loggedIn() throws SQLException{
+        ArrayList<String> choices = new ArrayList<String>();
+        for(int i =1; i <5; i++  ){
+            choices.add(i+"");
+        }
+        while(true){
+            System.out.println("Welcome " + name + " You are logged in.");
+            System.out.println("1. Show Friends");
+            System.out.println("2. Send User Friend Request");
+            System.out.println("3. Confirm Friend Request");
+            System.out.println("4. Logoutt");
+
+
+            System.out.print("Enter your choice: ");
+            String input = scan.nextLine();
+            while(!choices.contains(input)){
+                System.out.print("Enter your choice: ");
+                input = scan.nextLine();
+            }
+            if(input.equals("1")){
+                //Dan
+            }
+            else if(input.equals("2")){
+                System.out.println("Enter The email of the user you want to send the request to:");
+                String email  = scan.nextLine();
+                email = email.toLowerCase();
+                int otherID = fs.getIDFromEmail(email);
+                while(otherID == 0 || new Integer(otherID).equals(null)){
+                    System.out.print("Invalid Email:");
+                    email = scan.nextLine().toLowerCase();
+                    otherID = fs.getIDFromEmail(email);
+                }
+                fs.initiateFriendship(userID,otherID);
+            }
+            else if(input.equals("3")){
+                System.out.println("Enter The email of the user you want to confirm: ");
+                String email  = scan.nextLine();
+                email = email.toLowerCase();
+                int otherID = fs.getIDFromEmail(email);
+                while(otherID == 0 || new Integer(otherID).equals(null)){
+                    System.out.print("Invalid Email:");
+                    email = scan.nextLine().toLowerCase();
+                    otherID = fs.getIDFromEmail(email);
+                }
+                fs.establishFriendship(otherID,userID);
+            }
+            else if(input.equals("4")){
+                fs.done();
+                System.exit(0);
+            }
+        }
     }
 }
