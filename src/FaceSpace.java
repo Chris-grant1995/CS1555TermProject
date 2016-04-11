@@ -113,6 +113,7 @@ public class FaceSpace {
         return flag;
     }
 
+<<<<<<< Updated upstream
     public String getUserFromUserID(int userID) throws SQLException {
         String statement = "SELECT * FROM Users WHERE userID = ?";
         preparedStatement = connection.prepareStatement(statement);
@@ -168,6 +169,18 @@ public class FaceSpace {
 
         return results;
     }
+=======
+    public void createGroup(String name, String description, int limit) throws SQLException{
+        System.out.println("Creating new group");
+        String statement = "INSERT INTO Groups VALUES(GroupSEQ.nextval,?, ?, ?)";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(1,name);
+        preparedStatement.setString(2,description);
+        preparedStatement.setInt(3, limit);
+        preparedStatement.executeUpdate();
+    }
+
+>>>>>>> Stashed changes
 
     public void done(){
         try {
