@@ -121,7 +121,6 @@ public class FaceSpace {
         preparedStatement.setInt(3,id2);
         preparedStatement.setInt(4,id1);
 
-<<<<<<< HEAD
         resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             flag = false;
@@ -129,9 +128,6 @@ public class FaceSpace {
         return flag;
 
     }
-=======
-<<<<<<< Updated upstream
->>>>>>> origin/master
     public String getUserFromUserID(int userID) throws SQLException {
         String statement = "SELECT * FROM Users WHERE userID = ?";
         preparedStatement = connection.prepareStatement(statement);
