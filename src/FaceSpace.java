@@ -169,7 +169,7 @@ public class FaceSpace {
 
         return results;
     }
-=======
+    
     public void createGroup(String name, String description, int limit) throws SQLException{
         System.out.println("Creating new group");
         String statement = "INSERT INTO Groups VALUES(GroupSEQ.nextval,?, ?, ?)";
@@ -180,7 +180,6 @@ public class FaceSpace {
         preparedStatement.executeUpdate();
     }
 
->>>>>>> Stashed changes
 
     public void done(){
         try {
