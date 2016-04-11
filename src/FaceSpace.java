@@ -81,6 +81,38 @@ public class FaceSpace {
             System.out.println(resultSet.getInt(1) + "\t" + resultSet.getInt(2) + "\t" + resultSet.getInt(3) );
         }
     }
+    public int getIDFromEmail(String email) throws SQLException{
+        String statement = "SELECT * FROM Users WHERE email = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(1,email);
+        resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+           return resultSet.getInt(1);
+        }
+        return 0;
+    }
+    public String getNameFromID(int id) throws SQLException{
+        String statement = "SELECT * FROM Users WHERE userID = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1,id);
+        resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+            return resultSet.getString(2);
+        }
+        return null;
+    }
+    public boolean isEmailUnique(String email) throws SQLException{
+        boolean flag = true;
+        String statement = "SELECT * FROM Users WHERE email = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(1,email);
+        resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+            flag = false;
+        }
+        return flag;
+    }
+
 
     public void done(){
         try {
