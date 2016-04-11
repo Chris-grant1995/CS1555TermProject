@@ -120,7 +120,7 @@ public class FaceSpace {
         resultSet = preparedStatement.executeQuery();
         String result = "";
 
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             result = resultSet.getInt(1) + "\t" + resultSet.getString(2) + "\t" + resultSet.getString(3) +"\t" + resultSet.getString(4);
         }
 
@@ -131,9 +131,10 @@ public class FaceSpace {
         String statement = "SELECT * FROM Friendships WHERE (senID = ?) OR (recID = ?)";
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement.setInt(1, userID);
+        preparedStatement.setInt(2,userID);
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             if  (resultSet.getInt(3) == 1) {
                 continue;
@@ -151,9 +152,10 @@ public class FaceSpace {
         String statement = "SELECT * FROM Friendships WHERE (senID = ?) OR (recID = ?)";
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement.setInt(1, userID);
+        preparedStatement.setInt(2,userID);
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             if  (resultSet.getInt(3) != 1) {
                 continue;

@@ -55,6 +55,7 @@ public class Main {
             String dob = (scan.nextLine()).trim() + " 00:00:00";
 
             fs.createUser(name,email,dob);
+            userID = fs.getIDFromEmail(email);
             loggedIn();
 
         }
@@ -80,6 +81,17 @@ public class Main {
             }
             if(input.equals("1")){
                 //Dan
+                ArrayList<Integer> friends = fs.getFriendsUserIDs(userID);
+                ArrayList<Integer> pending = fs.getPendingFriendsUserIDs(userID);
+                //System.out.println(pending.get(0));
+                for(int i =0; i< friends.size(); i++){
+                    int id = friends.get(i);
+                    System.out.println(fs.getUserFromUserID(id) + "\t Friends");
+                }
+                for(int i =0; i<pending.size(); i++){
+                    int id = pending.size();
+                    System.out.println(fs.getUserFromUserID(id) + "\t Pending");
+                }
             }
             else if(input.equals("2")){
                 System.out.println("Enter The email of the user you want to send the request to:");
