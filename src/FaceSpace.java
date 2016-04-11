@@ -112,7 +112,22 @@ public class FaceSpace {
         }
         return flag;
     }
+    public boolean notAlreadyFriends(int id1, int id2) throws SQLException{
+        boolean flag = true;
+        String statement = "SELECT * FROM Friendships WHERE (senID = ? AND recID = ?) OR (senID = ? AND recID = ?)";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1,id1);
+        preparedStatement.setInt(2,id2);
+        preparedStatement.setInt(3,id2);
+        preparedStatement.setInt(4,id1);
 
+        resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+            flag = false;
+        }
+        return flag;
+
+    }
     public String getUserFromUserID(int userID) throws SQLException {
         String statement = "SELECT * FROM Users WHERE userID = ?";
         preparedStatement = connection.prepareStatement(statement);

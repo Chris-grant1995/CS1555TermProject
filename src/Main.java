@@ -89,7 +89,7 @@ public class Main {
                     System.out.println(fs.getUserFromUserID(id) + "\t Friends");
                 }
                 for(int i =0; i<pending.size(); i++){
-                    int id = pending.size();
+                    int id = pending.get(i);
                     System.out.println(fs.getUserFromUserID(id) + "\t Pending");
                 }
             }
@@ -103,7 +103,12 @@ public class Main {
                     email = scan.nextLine().toLowerCase();
                     otherID = fs.getIDFromEmail(email);
                 }
-                fs.initiateFriendship(userID,otherID);
+                if(fs.notAlreadyFriends(userID,otherID)){
+                    fs.initiateFriendship(userID,otherID);
+                }
+                else{
+                    System.out.println("Already Friends");
+                }
             }
             else if(input.equals("3")){
                 System.out.println("Enter The email of the user you want to confirm: ");
