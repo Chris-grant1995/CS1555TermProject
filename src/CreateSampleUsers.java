@@ -37,7 +37,7 @@ public class CreateSampleUsers {
                 name = fname + " " + lname;
             }
             names.add(name);
-            String email = fname+lname + "@gmail.com";
+            String email = (fname+lname + "@gmail.com").toLowerCase();
             statement+= "\'" + name + "\', \'" + email + "\', TIMESTAMP \'";
             statement += login.format(dobC.getTime()).toString() + "\',TIMESTAMP \'";
             statement+=login.format(loginC.getTime()).toString() + "\');";
