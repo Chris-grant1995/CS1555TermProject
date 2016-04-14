@@ -66,6 +66,7 @@ public class Main {
             choices.add(i+"");
         }
         while(true){
+            fs.testUser();
             System.out.println("Welcome " + name + " You are logged in.");
             System.out.println("1. Show Friends");
             System.out.println("2. Send User Friend Request");

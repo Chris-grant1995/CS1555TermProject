@@ -883,3 +883,5 @@ INSERT INTO Messages VALUES(MsgSEQ.nextval,41, 11, 'Test Sub 296', 'Test text 29
 INSERT INTO Messages VALUES(MsgSEQ.nextval,90, 64, 'Test Sub 297', 'Test text 297', TIMESTAMP '2016-04-10 11:35:28');
 INSERT INTO Messages VALUES(MsgSEQ.nextval,83, 76, 'Test Sub 298', 'Test text 298', TIMESTAMP '2016-04-10 11:35:28');
 INSERT INTO Messages VALUES(MsgSEQ.nextval,57, 67, 'Test Sub 299', 'Test text 299', TIMESTAMP '2016-04-10 11:35:28');
+
+commit;
