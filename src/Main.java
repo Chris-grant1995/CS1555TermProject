@@ -54,24 +54,46 @@ public class Main {
             System.out.print("Enter your DOB (YYYY-MM-DD): ");
             String dob = (scan.nextLine()).trim() + " 00:00:00";
 
-            fs.createUser(name,email,dob);
+            while(!fs.createUser(name,email,dob)){
+                System.out.println("Failure, Try again");
+                System.out.print("Enter your Name: ");
+                name = scan.nextLine();
+
+                System.out.print("Enter your email: ");
+                email = scan.nextLine().toLowerCase();
+                while(!email.contains("@")){
+                    System.out.print("Enter your email: ");
+                    email = scan.nextLine().toLowerCase();
+                }
+                while (!fs.isEmailUnique(email)){
+                    System.out.print("Email Already in Use, enter another: ");
+                    email = scan.nextLine().toLowerCase();
+                }
+                email = email.toLowerCase();
+                System.out.print("Enter your DOB (YYYY-MM-DD): ");
+                dob = (scan.nextLine()).trim() + " 00:00:00";
+            }
             userID = fs.getIDFromEmail(email);
             loggedIn();
 
         }
     }
     public static void loggedIn() throws SQLException{
+        if(!fs.updateLastLogin(userID)){
+            System.out.println("Error Logging in.");
+            return;
+        }
         ArrayList<String> choices = new ArrayList<String>();
         for(int i =1; i <5; i++  ){
             choices.add(i+"");
         }
         while(true){
-            fs.testUser();
+            //fs.testUser();
             System.out.println("Welcome " + name + " You are logged in.");
             System.out.println("1. Show Friends");
             System.out.println("2. Send User Friend Request");
             System.out.println("3. Confirm Friend Request");
-            System.out.println("4. Logoutt");
+            System.out.println("4. Logout");
 
 
             System.out.print("Enter your choice: ");
@@ -95,7 +117,7 @@ public class Main {
                 }
             }
             else if(input.equals("2")){
-                System.out.println("Enter The email of the user you want to send the request to:");
+                System.out.print("Enter The email of the user you want to send the request to:");
                 String email  = scan.nextLine();
                 email = email.toLowerCase();
                 int otherID = fs.getIDFromEmail(email);
@@ -112,7 +134,7 @@ public class Main {
                 }
             }
             else if(input.equals("3")){
-                System.out.println("Enter The email of the user you want to confirm: ");
+                System.out.print("Enter The email of the user you want to confirm: ");
                 String email  = scan.nextLine();
                 email = email.toLowerCase();
                 int otherID = fs.getIDFromEmail(email);
@@ -121,7 +143,9 @@ public class Main {
                     email = scan.nextLine().toLowerCase();
                     otherID = fs.getIDFromEmail(email);
                 }
-                fs.establishFriendship(otherID,userID);
+                if(!fs.establishFriendship(otherID,userID)){
+                    System.out.println("Try again");
+                }
             }
             else if(input.equals("4")){
                 fs.done();

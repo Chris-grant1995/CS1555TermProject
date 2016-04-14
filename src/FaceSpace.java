@@ -25,27 +25,33 @@ public class FaceSpace {
         System.out.println("Sucessfully Connected");
 
     }
-    public void createUser(String name, String email,String dob  ) throws SQLException{
-        System.out.println("Creating New User");
-        String statement = "INSERT INTO Users VALUES(UsersSEQ.nextval,?, ?, ?, ?)";
-        Calendar loginC = Calendar.getInstance();
-        DateFormat login = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        preparedStatement = connection.prepareStatement(statement);
-        preparedStatement.setString(1,name);
-        preparedStatement.setString(2,email);
-        java.util.Date d = new Date();
+    public boolean createUser(String name, String email,String dob  ) throws SQLException{
         try {
+            System.out.println("Creating New User");
+            String statement = "INSERT INTO Users VALUES(UsersSEQ.nextval,?, ?, ?, ?)";
+            Calendar loginC = Calendar.getInstance();
+            DateFormat login = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, email);
+            java.util.Date d = new Date();
+
             d = login.parse(dob);
-        } catch (ParseException e) {
-            System.out.println("Invalid Date");
+
+            //System.out.println("Invalid Date");
+
+            Timestamp birthday = new Timestamp(d.getTime());
+            Timestamp time = new Timestamp(loginC.getTimeInMillis());
+            preparedStatement.setTimestamp(3, birthday);
+            preparedStatement.setTimestamp(4, time);
+            //System.out.println("Executing Query: ");
+            preparedStatement.executeUpdate();
+            //System.out.println("Done");
+            return true;
         }
-        Timestamp birthday = new Timestamp(d.getTime());
-        Timestamp time = new Timestamp(loginC.getTimeInMillis());
-        preparedStatement.setTimestamp(3,birthday);
-        preparedStatement.setTimestamp(4,time);
-        //System.out.println("Executing Query: ");
-        preparedStatement.executeUpdate();
-        //System.out.println("Done");
+        catch (Exception e){
+            return false;
+        }
     }
     public void initiateFriendship(int id1, int id2) throws SQLException{
         String statement = "INSERT INTO Friendships VALUES(?, ?, 0)";
@@ -54,12 +60,18 @@ public class FaceSpace {
         preparedStatement.setInt(2,id2);
         preparedStatement.executeUpdate();
     }
-    public void establishFriendship(int id1, int id2) throws SQLException{
-        String statement = "UPDATE Friendships SET confirmed = 1 WHERE senID = ? AND recID = ?";
-        preparedStatement = connection.prepareStatement(statement);
-        preparedStatement.setInt(1,id1);
-        preparedStatement.setInt(2,id2);
-        preparedStatement.executeUpdate();
+    public boolean establishFriendship(int id1, int id2) throws SQLException{
+        try {
+            String statement = "UPDATE Friendships SET confirmed = 1 WHERE senID = ? AND recID = ?";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1, id1);
+            preparedStatement.setInt(2, id2);
+            preparedStatement.executeUpdate();
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
     public void testUser()throws SQLException{
         System.out.println("Running TestUser");
@@ -182,6 +194,23 @@ public class FaceSpace {
         }
 
         return results;
+    }
+    public boolean updateLastLogin(int userID){
+        try{
+            String statement  = "UPDATE Users Set lastLogin = ? WHERE userID = ?";
+            preparedStatement = connection.prepareStatement(statement);
+            Calendar loginC = Calendar.getInstance();
+            Timestamp time = new Timestamp(loginC.getTimeInMillis());
+
+            preparedStatement.setTimestamp(1,time);
+            preparedStatement.setInt(2,userID);
+            preparedStatement.executeUpdate();
+            return true;
+
+        }
+        catch (Exception e){
+            return false;
+        }
     }
     
     public void createGroup(String name, String description, int limit) throws SQLException{
