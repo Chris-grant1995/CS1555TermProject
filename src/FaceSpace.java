@@ -317,17 +317,20 @@ public class FaceSpace {
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1,userID);
             resultSet = preparedStatement.executeQuery();
+            ArrayList<String> subjMsg = new ArrayList<String>();
+            ArrayList<Integer> emailIDs = new ArrayList<Integer>();
             System.out.println("From \t Subj \t Message ");
             while(resultSet.next()){
                 int sendID = resultSet.getInt(3);
                 String subj = resultSet.getString(4);
                 String msg = resultSet.getString(5);
-                String email = getEmailFromID(sendID);
-
-                System.out.println(email + "\t" + subj + "\t" + msg);
-
+                subjMsg.add("\t" + subj + "\t" + msg);
+                emailIDs.add(sendID);
             }
-
+            for(int i =0; i<subjMsg.size(); i++){
+                String email = getEmailFromID(emailIDs.get(i));
+                System.out.println(email + subjMsg.get(i));
+            }
             return true;
         }catch (Exception e){
             return false;
