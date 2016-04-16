@@ -113,6 +113,16 @@ public class FaceSpace {
         }
         return null;
     }
+    public String getEmailFromID(int id) throws SQLException{
+        String statement = "SELECT * FROM Users WHERE userID = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1,id);
+        resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+            return resultSet.getString(3);
+        }
+        return null;
+    }
     public boolean isEmailUnique(String email) throws SQLException{
         boolean flag = true;
         String statement = "SELECT * FROM Users WHERE email = ?";
@@ -225,7 +235,7 @@ public class FaceSpace {
 
     public boolean sendMessageToUser(String subj, String body, int rec, int send){
         try{
-            String statement = "INSERT INTO Groups VALUES(MsgSEQ.nextval,?,?,?,?,?)";
+            String statement = "INSERT INTO Messages VALUES(MsgSEQ.nextval,?,?,?,?,?)";
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1,rec);
             preparedStatement.setInt(2,send);
@@ -241,6 +251,28 @@ public class FaceSpace {
             return false;
         }
 
+    }
+    public boolean displayMessages(int userID){
+        try{
+            String statement = "SELECT * FROM Messages WHERE recID = ?";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1,userID);
+            resultSet = preparedStatement.executeQuery();
+            System.out.println("From \t Subj \t Message ");
+            while(resultSet.next()){
+                int sendID = resultSet.getInt(3);
+                String subj = resultSet.getString(4);
+                String msg = resultSet.getString(5);
+                String email = getEmailFromID(sendID);
+
+                System.out.println(email + "\t" + subj + "\t" + msg);
+
+            }
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
 
