@@ -199,8 +199,8 @@ public class FaceSpace {
         try{
             String statement  = "UPDATE Users Set lastLogin = ? WHERE userID = ?";
             preparedStatement = connection.prepareStatement(statement);
-            Calendar loginC = Calendar.getInstance();
-            Timestamp time = new Timestamp(loginC.getTimeInMillis());
+            //Calendar loginC = Calendar.getInstance();
+            Timestamp time = new Timestamp(System.currentTimeMillis());
 
             preparedStatement.setTimestamp(1,time);
             preparedStatement.setInt(2,userID);
@@ -221,6 +221,26 @@ public class FaceSpace {
         preparedStatement.setString(2,description);
         preparedStatement.setInt(3, limit);
         preparedStatement.executeUpdate();
+    }
+
+    public boolean sendMessageToUser(String subj, String body, int rec, int send){
+        try{
+            String statement = "INSERT INTO Groups VALUES(MsgSEQ.nextval,?,?,?,?,?)";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1,rec);
+            preparedStatement.setInt(2,send);
+            preparedStatement.setString(3,subj);
+            preparedStatement.setString(4,body);
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            preparedStatement.setTimestamp(5,time);
+            preparedStatement.executeUpdate();
+
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+
     }
 
 

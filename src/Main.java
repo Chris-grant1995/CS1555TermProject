@@ -84,7 +84,7 @@ public class Main {
             return;
         }
         ArrayList<String> choices = new ArrayList<String>();
-        for(int i =1; i <5; i++  ){
+        for(int i =1; i <6; i++  ){
             choices.add(i+"");
         }
         while(true){
@@ -93,7 +93,8 @@ public class Main {
             System.out.println("1. Show Friends");
             System.out.println("2. Send User Friend Request");
             System.out.println("3. Confirm Friend Request");
-            System.out.println("4. Logout");
+            System.out.println("4. Send Message");
+            System.out.println("5. Logout");
 
 
             System.out.print("Enter your choice: ");
@@ -148,6 +149,21 @@ public class Main {
                 }
             }
             else if(input.equals("4")){
+                System.out.print("Enter The email of the user you want to send a message to: ");
+                String email  = scan.nextLine().toLowerCase();
+                int otherID = fs.getIDFromEmail(email);
+                while(otherID == 0 || new Integer(otherID).equals(null)){
+                    System.out.print("Invalid Email:");
+                    email = scan.nextLine().toLowerCase();
+                    otherID = fs.getIDFromEmail(email);
+                }
+                System.out.print("Enter The subject of your message: ");
+                String subj  = scan.nextLine();
+                System.out.print("Enter The contents of your message: ");
+                String message  = scan.nextLine();
+                fs.sendMessageToUser(subj,message,otherID,userID);
+            }
+            else if(input.equals("5")){
                 fs.done();
                 System.exit(0);
             }
