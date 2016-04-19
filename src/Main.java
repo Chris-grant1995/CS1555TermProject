@@ -84,7 +84,7 @@ public class Main {
             return;
         }
         ArrayList<String> choices = new ArrayList<String>();
-        for(int i =1; i <7; i++  ){
+        for(int i =1; i <9; i++  ){
             choices.add(i+"");
         }
         while(true){
@@ -95,7 +95,9 @@ public class Main {
             System.out.println("3. Confirm Friend Request");
             System.out.println("4. View My Messages");
             System.out.println("5. Send Message");
-            System.out.println("6. Logout");
+            System.out.println("6. Create Group");
+            System.out.println("7. Join Group");
+            System.out.println("8. Logout");
 
 
             System.out.print("Enter your choice: ");
@@ -171,6 +173,36 @@ public class Main {
 
             }
             else if(input.equals("6")){
+                System.out.print("Enter The name of the group you want to create: ");
+                String name  = scan.nextLine().toLowerCase();
+                int groupID = fs.getGroupIDFromName(name);
+                while(groupID != -1){
+                    System.out.print("Invalid Name:");
+                    name = scan.nextLine().toLowerCase();
+                    groupID = fs.getGroupIDFromName(name);
+                }
+                System.out.print("Enter The Description for your group: ");
+                String desc  = scan.nextLine();
+                System.out.print("Enter Max number of members in your group:  ");
+                int  max  = scan.nextInt();
+                if(!fs.createGroup(name,desc,max)){
+                    System.out.println("Error Occurred");
+                }
+            }
+            else if(input.equals("7")){
+                System.out.print("Enter The name of the group you want to join: ");
+                String name  = scan.nextLine().toLowerCase();
+                int groupID = fs.getGroupIDFromName(name);
+                while(groupID == -1){
+                    System.out.print("Invalid Name:");
+                    name = scan.nextLine().toLowerCase();
+                    groupID = fs.getGroupIDFromName(name);
+                }
+                if(!fs.addToGroup(groupID,userID)){
+                    System.out.println("Error Occurred");
+                }
+            }
+            else if(input.equals("8")){
                 fs.done();
                 System.exit(0);
             }

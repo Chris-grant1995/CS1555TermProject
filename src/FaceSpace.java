@@ -223,14 +223,73 @@ public class FaceSpace {
         }
     }
     
-    public void createGroup(String name, String description, int limit) throws SQLException{
+    public boolean createGroup(String name, String description, int limit) throws SQLException{
         System.out.println("Creating new group");
-        String statement = "INSERT INTO Groups VALUES(GroupSEQ.nextval,?, ?, ?)";
-        preparedStatement = connection.prepareStatement(statement);
-        preparedStatement.setString(1,name);
-        preparedStatement.setString(2,description);
-        preparedStatement.setInt(3, limit);
-        preparedStatement.executeUpdate();
+        try{
+            String statement = "INSERT INTO Groups VALUES(GroupSEQ.nextval,?, ?, ?)";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,description);
+            preparedStatement.setInt(3, limit);
+            preparedStatement.executeUpdate();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+    public boolean addToGroup(int groupID, int userID){
+        try{
+            String statement = "SELECT count(userID), groupID from Membership WHERE groupID = ? GROUP BY groupID";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1,groupID);
+            resultSet = preparedStatement.executeQuery();
+            int numOfMems = -1;
+            while(resultSet.next()){
+                numOfMems = resultSet.getInt(1);
+            }
+            statement = "SELECT maxMems FROM Groups where groupID = ?";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1,groupID);
+            resultSet = preparedStatement.executeQuery();
+            int maxMems = -1;
+            while(resultSet.next()){
+                maxMems = resultSet.getInt(1);
+            }
+            if(numOfMems < maxMems){
+                statement = "INSERT INTO Membership VALUES(?,?)";
+                preparedStatement = connection.prepareStatement(statement);
+                preparedStatement.setInt(1,groupID);
+                preparedStatement.setInt(2,userID);
+                preparedStatement.executeUpdate();
+            }
+            else{
+                return false;
+            }
+
+
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    public int getGroupIDFromName(String name ){
+        int ID = -1;
+        try{
+            String statement = "SELECT groupID from Groups WHERE name = ?";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1,name);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                ID = resultSet.getInt(1);
+            }
+            return ID;
+        }catch (Exception e){
+            return -1;
+        }
+
     }
 
     public boolean sendMessageToUser(String subj, String body, int rec, int send){
