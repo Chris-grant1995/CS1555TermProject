@@ -345,8 +345,9 @@ public class FaceSpace {
             e.printStackTrace();
         }
     }
-    public boolean threeDegrees(int userID1, int userID2){
+    public int threeDegrees(int userID1, int userID2){
         try{
+
             String statement = "SELECT * FROM Friendships where confirmed = 1";
             preparedStatement = connection.prepareStatement(statement);
 
@@ -374,16 +375,24 @@ public class FaceSpace {
             }
             paths.remove(0);
             paths.remove(0);
-            System.out.print(userID1 + "-->");
-            for(int i =0; i<paths.size()-1; i++){
-                System.out.print(paths.get(i) + "-->");
+            paths.remove(paths.size()-1);
+            if(paths.size() < 4){
+
+                System.out.print(getNameFromID(userID1) + "--> ");
+                for(int i =0; i<paths.size()-1; i++){
+                    System.out.print(getNameFromID(paths.get(i)) + "--> ");
+                }
+                System.out.println(getNameFromID(userID2));
+                return 1;
             }
-            System.out.println(userID2);
-            return true;
+            else{
+                return 0;
+            }
+
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
+            //System.out.println(e.getMessage());
+            return -1;
         }
     }
 
