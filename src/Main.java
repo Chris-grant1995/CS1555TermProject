@@ -90,15 +90,15 @@ public class Main {
         while(true){
             //fs.testUser();
             System.out.println("Welcome " + name + " You are logged in.");
-            System.out.println("1. Show Friends");
-            System.out.println("2. Send User Friend Request");
-            System.out.println("3. Confirm Friend Request");
-            System.out.println("4. View My Messages");
-            System.out.println("5. Send Message");
-            System.out.println("6. Create Group");
-            System.out.println("7. Join Group");
-            System.out.println("8. Logout");
-
+            System.out.println("1.\tShow Friends");
+            System.out.println("2.\tSend User Friend Request");
+            System.out.println("3.\tConfirm Friend Request");
+            System.out.println("4.\tView My Messages");
+            System.out.println("5.\tSend Message");
+            System.out.println("6.\tCreate Group");
+            System.out.println("7.\tJoin Group");
+            System.out.println("8.\tLogout");
+            System.out.print("\n");
 
             System.out.print("Enter your choice: ");
             String input = scan.nextLine();
@@ -106,8 +106,9 @@ public class Main {
                 System.out.print("Enter your choice: ");
                 input = scan.nextLine();
             }
+            System.out.print("\n");
+
             if(input.equals("1")){
-                //Dan
                 ArrayList<Integer> friends = fs.getFriendsUserIDs(userID);
                 ArrayList<Integer> pending = fs.getPendingFriendsUserIDs(userID);
                 //System.out.println(pending.get(0));
@@ -121,7 +122,7 @@ public class Main {
                 }
             }
             else if(input.equals("2")){
-                System.out.print("Enter The email of the user you want to send the request to:");
+                System.out.print("Enter The email of the user you want to send the request to:\n");
                 String email  = scan.nextLine();
                 email = email.toLowerCase();
                 int otherID = fs.getIDFromEmail(email);
@@ -134,11 +135,11 @@ public class Main {
                     fs.initiateFriendship(userID,otherID);
                 }
                 else{
-                    System.out.println("Already Friends");
+                    System.out.println("Already Friends\n");
                 }
             }
             else if(input.equals("3")){
-                System.out.print("Enter The email of the user you want to confirm: ");
+                System.out.print("Enter The email of the user you want to confirm:\n");
                 String email  = scan.nextLine();
                 email = email.toLowerCase();
                 int otherID = fs.getIDFromEmail(email);
@@ -155,7 +156,7 @@ public class Main {
                 fs.displayMessages(userID);
             }
             else if(input.equals("5")){
-                System.out.print("Enter The email of the user you want to send a message to: ");
+                System.out.print("Enter The email of the user you want to send a message to:\n");
                 String email  = scan.nextLine().toLowerCase();
                 int otherID = fs.getIDFromEmail(email);
                 while(otherID == 0 || new Integer(otherID).equals(null)){
@@ -173,7 +174,7 @@ public class Main {
 
             }
             else if(input.equals("6")){
-                System.out.print("Enter The name of the group you want to create: ");
+                System.out.print("Enter The name of the group you want to create:\n");
                 String name  = scan.nextLine().toLowerCase();
                 int groupID = fs.getGroupIDFromName(name);
                 while(groupID != -1){
@@ -181,16 +182,16 @@ public class Main {
                     name = scan.nextLine().toLowerCase();
                     groupID = fs.getGroupIDFromName(name);
                 }
-                System.out.print("Enter The Description for your group: ");
+                System.out.print("Enter The Description for your group:\n");
                 String desc  = scan.nextLine();
-                System.out.print("Enter Max number of members in your group:  ");
+                System.out.print("Enter Max number of members in your group:\n");
                 int  max  = scan.nextInt();
                 if(!fs.createGroup(name,desc,max)){
                     System.out.println("Error Occurred");
                 }
             }
             else if(input.equals("7")){
-                System.out.print("Enter The name of the group you want to join: ");
+                System.out.print("Enter The name of the group you want to join:\n");
                 String name  = scan.nextLine().toLowerCase();
                 int groupID = fs.getGroupIDFromName(name);
                 while(groupID == -1){
