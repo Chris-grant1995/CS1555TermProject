@@ -342,4 +342,46 @@ public class FaceSpace {
             e.printStackTrace();
         }
     }
+    public boolean threeDegrees(int userID1, int userID2){
+        try{
+            String statement = "SELECT * FROM Friendships where confirmed = 1";
+            preparedStatement = connection.prepareStatement(statement);
+
+            resultSet = preparedStatement.executeQuery();
+            //Graph g = new Graph(1000);
+            EdgeWeightedDigraph g = new EdgeWeightedDigraph(1000);
+            while(resultSet.next()){
+                int id1 = resultSet.getInt(1);
+                int id2 = resultSet.getInt(2);
+
+                g.addEdge(new DirectedEdge(id1,id2,0,0));
+                g.addEdge(new DirectedEdge(id2,id1,0,0));
+            }
+            DijkstraSP d = new DijkstraSP(g,userID1);
+            Iterator<DirectedEdge> path = d.pathTo(userID2).iterator();
+            ArrayList<Integer> paths = new ArrayList<Integer>();
+            int counter = 0;
+            while(path.hasNext()){
+                DirectedEdge t = path.next();
+                if(counter ==0 ){
+                    paths.add(t.from());
+                }
+                paths.add(t.to());
+                counter++;
+            }
+            paths.remove(0);
+            paths.remove(0);
+            System.out.print(userID1 + "-->");
+            for(int i =0; i<paths.size()-1; i++){
+                System.out.print(paths.get(i) + "-->");
+            }
+            System.out.println(userID2);
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
 }

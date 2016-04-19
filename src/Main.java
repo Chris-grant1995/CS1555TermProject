@@ -84,7 +84,7 @@ public class Main {
             return;
         }
         ArrayList<String> choices = new ArrayList<String>();
-        for(int i =1; i <9; i++  ){
+        for(int i =1; i <10; i++  ){
             choices.add(i+"");
         }
         while(true){
@@ -97,7 +97,8 @@ public class Main {
             System.out.println("5. Send Message");
             System.out.println("6. Create Group");
             System.out.println("7. Join Group");
-            System.out.println("8. Logout");
+            System.out.println("8. Three Degrees");
+            System.out.println("9. Logout");
 
 
             System.out.print("Enter your choice: ");
@@ -203,6 +204,20 @@ public class Main {
                 }
             }
             else if(input.equals("8")){
+                System.out.print("Enter The email of the user you want see the friendship of:  ");
+                String email  = scan.nextLine();
+                email = email.toLowerCase();
+                int otherID = fs.getIDFromEmail(email);
+                while(otherID == 0 || new Integer(otherID).equals(null)){
+                    System.out.print("Invalid Email:");
+                    email = scan.nextLine().toLowerCase();
+                    otherID = fs.getIDFromEmail(email);
+                }
+                if(!fs.threeDegrees(userID,otherID)){
+                    System.out.println("Try again");
+                }
+            }
+            else if(input.equals("9")){
                 fs.done();
                 System.exit(0);
             }
