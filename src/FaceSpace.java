@@ -150,19 +150,6 @@ public class FaceSpace {
         return flag;
 
     }
-    public String getUserFromUserID(int userID) throws SQLException {
-        String statement = "SELECT * FROM Users WHERE userID = ?";
-        preparedStatement = connection.prepareStatement(statement);
-        preparedStatement.setInt(1, userID);
-        resultSet = preparedStatement.executeQuery();
-        String result = "";
-
-        while (resultSet.next()) {
-            result = resultSet.getInt(1) + "\t" + resultSet.getString(2) + "\t" + resultSet.getString(3) +"\t" + resultSet.getString(4);
-        }
-
-        return result;
-    }
 
     public ArrayList<Integer> getPendingFriendsUserIDs(int userID) throws SQLException {
         String statement = "SELECT * FROM Friendships WHERE (senID = ?) OR (recID = ?)";
@@ -383,5 +370,80 @@ public class FaceSpace {
             return false;
         }
     }
+
+
+    //
+    // USER SEARCH
+    //
+
+    public ArrayList<Integer> searchForUsersWithTerm(String searchTerm) throws SQLException {
+        String[] terms =  searchTerm.split("\\s+");
+
+        ArrayList<Integer> results = new ArrayList<>();
+        Set<Integer> hs = new HashSet<>();
+
+        for (String s : terms) {
+            hs.addAll(getUserIDsWithNameOrEmail(s));
+        }
+
+        results.addAll(hs);
+        return results;
+    }
+
+
+    private ArrayList<Integer> getUserIDsWithNameOrEmail(String searchTerm) throws SQLException {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        Set<Integer> hs = new HashSet<>();
+        hs.addAll(getUserIDsWithEmail(searchTerm));
+        hs.addAll(getUserIDsWithName(searchTerm));
+
+        results.addAll(hs);
+
+        return results;
+    }
+
+    private ArrayList<Integer> getUserIDsWithName(String name) throws SQLException {
+        String statement = "SELECT * FROM Users WHERE name = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(1, "%" + name + "%");
+        resultSet = preparedStatement.executeQuery();
+
+        ArrayList<Integer> results = new ArrayList<>();
+        while (resultSet.next()) {
+            results.add(resultSet.getInt(1));
+        }
+
+        return results;
+    }
+
+    private ArrayList<Integer> getUserIDsWithEmail(String email) throws SQLException {
+        String statement = "SELECT * FROM Users WHERE email = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(1, "%" + email + "%");
+        resultSet = preparedStatement.executeQuery();
+
+        ArrayList<Integer> results = new ArrayList<>();
+        while (resultSet.next()) {
+            results.add(resultSet.getInt(3));
+        }
+
+        return results;
+    }
+
+    public String getUserFromUserID(int userID) throws SQLException {
+        String statement = "SELECT * FROM Users WHERE userID = ?";
+        preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setInt(1, userID);
+        resultSet = preparedStatement.executeQuery();
+        String result = "";
+
+        while (resultSet.next()) {
+            result = resultSet.getInt(1) + "\t" + resultSet.getString(2) + "\t" + resultSet.getString(3) +"\t" + resultSet.getString(4);
+        }
+
+        return result;
+    }
+
 
 }
