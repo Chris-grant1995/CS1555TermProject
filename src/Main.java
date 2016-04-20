@@ -213,8 +213,12 @@ public class Main {
                     email = scan.nextLine().toLowerCase();
                     otherID = fs.getIDFromEmail(email);
                 }
-                if(!fs.threeDegrees(userID,otherID)){
-                    System.out.println("Try again");
+                int result = fs.threeDegrees(userID,otherID);
+                if( result== 0){
+                    System.out.println("No Path Exists or Path is too long");
+                }
+                else if(result == -1){
+                    System.out.println("No Path Exists");
                 }
             }
             else if(input.equals("9")){

@@ -304,17 +304,20 @@ public class FaceSpace {
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1,userID);
             resultSet = preparedStatement.executeQuery();
+            ArrayList<String> subjMsg = new ArrayList<String>();
+            ArrayList<Integer> emailIDs = new ArrayList<Integer>();
             System.out.println("From \t Subj \t Message ");
             while(resultSet.next()){
                 int sendID = resultSet.getInt(3);
                 String subj = resultSet.getString(4);
                 String msg = resultSet.getString(5);
-                String email = getEmailFromID(sendID);
-
-                System.out.println(email + "\t" + subj + "\t" + msg);
-
+                subjMsg.add("\t" + subj + "\t" + msg);
+                emailIDs.add(sendID);
             }
-
+            for(int i =0; i<subjMsg.size(); i++){
+                String email = getEmailFromID(emailIDs.get(i));
+                System.out.println(email + subjMsg.get(i));
+            }
             return true;
         }catch (Exception e){
             return false;
@@ -329,8 +332,9 @@ public class FaceSpace {
             e.printStackTrace();
         }
     }
-    public boolean threeDegrees(int userID1, int userID2){
+    public int threeDegrees(int userID1, int userID2){
         try{
+
             String statement = "SELECT * FROM Friendships where confirmed = 1";
             preparedStatement = connection.prepareStatement(statement);
 
@@ -358,16 +362,24 @@ public class FaceSpace {
             }
             paths.remove(0);
             paths.remove(0);
-            System.out.print(userID1 + "-->");
-            for(int i =0; i<paths.size()-1; i++){
-                System.out.print(paths.get(i) + "-->");
+            paths.remove(paths.size()-1);
+            if(paths.size() < 4){
+
+                System.out.print(getNameFromID(userID1) + "--> ");
+                for(int i =0; i<paths.size()-1; i++){
+                    System.out.print(getNameFromID(paths.get(i)) + "--> ");
+                }
+                System.out.println(getNameFromID(userID2));
+                return 1;
             }
-            System.out.println(userID2);
-            return true;
+            else{
+                return 0;
+            }
+
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
+            //System.out.println(e.getMessage());
+            return -1;
         }
     }
 
