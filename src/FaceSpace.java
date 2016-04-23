@@ -405,22 +405,11 @@ public class FaceSpace {
     }
 
 
-    private ArrayList<Integer> getUserIDsWithNameOrEmail(String searchTerm) throws SQLException {
-        ArrayList<Integer> results = new ArrayList<Integer>();
-
-        Set<Integer> hs = new HashSet<Integer>();
-        hs.addAll(getUserIDsWithEmail(searchTerm));
-        hs.addAll(getUserIDsWithName(searchTerm));
-
-        results.addAll(hs);
-
-        return results;
-    }
-
-    private ArrayList<Integer> getUserIDsWithName(String name) throws SQLException {
-        String statement = "SELECT * FROM Users WHERE name = ?";
+    private ArrayList<Integer> getUserIDsWithNameOrEmail(String term) throws SQLException {
+        String statement = "SELECT * FROM Users WHERE name = ? OR email = ?";
         preparedStatement = connection.prepareStatement(statement);
-        preparedStatement.setString(1, "%" + name + "%");
+        preparedStatement.setString(1, term + "%");
+        preparedStatement.setString(2, term + "%");
         resultSet = preparedStatement.executeQuery();
 
         ArrayList<Integer> results = new ArrayList<Integer>();
@@ -444,7 +433,6 @@ public class FaceSpace {
 
         return results;
     }
-
     public String getUserFromUserID(int userID) throws SQLException {
         String statement = "SELECT * FROM Users WHERE userID = ?";
         preparedStatement = connection.prepareStatement(statement);

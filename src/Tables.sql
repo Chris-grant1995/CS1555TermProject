@@ -14,7 +14,7 @@ DROP SEQUENCE MsgSeq;
 --email which serves as an AK, as well as their login.
 --
 CREATE TABLE Users(
-  userID NUMBER PRIMARY KEY,
+  userID NUMBER PRIMARY KEY ,
   name VARCHAR2(40) NOT NULL,
   email VARCHAR2(50) NOT NULL UNIQUE,
   dob TIMESTAMP NOT NULL,
@@ -31,8 +31,8 @@ CREATE TABLE Friendships(
   confirmed NUMBER NOT NULL,
   confirmedTime TIMESTAMP,
   PRIMARY KEY (senID,recID),
-  FOREIGN KEY(senID) references Users(userID),
-  FOREIGN KEY(recID) references Users(userID)
+  FOREIGN KEY(senID) references Users(userID)on delete cascade,
+  FOREIGN KEY(recID) references Users(userID)on delete cascade
 );
 CREATE TABLE Groups(
   groupID NUMBER PRIMARY KEY,
@@ -49,7 +49,7 @@ CREATE TABLE Membership (
   userID NUMBER NOT NULL,
   PRIMARY KEY (groupID,userID),
   FOREIGN KEY(groupID) references Groups(groupID),
-  FOREIGN KEY(userID) references Users(userID)
+  FOREIGN KEY(userID) references Users(userID)on delete cascade
 );
 CREATE Table Messages(
   msgID NUMBER PRIMARY KEY,
@@ -70,10 +70,6 @@ CREATE OR REPLACE Trigger deleteUser
   Before DELETE ON Users
   FOR EACH ROW
   BEGIN
-
-
-    DELETE FROM Membership
-    WHERE Membership.userID = :OLD.userID;
 
     UPDATE Messages
     SET Messages.membersDeleted = Messages.membersDeleted + 1
