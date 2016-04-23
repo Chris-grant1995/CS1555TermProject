@@ -97,7 +97,8 @@ public class Main {
             System.out.println("5.\tSend Message");
             System.out.println("6.\tCreate Group");
             System.out.println("7.\tJoin Group");
-            System.out.println("8.\tLogout");
+            System.out.println("8.\tThree Degrees of Friendship");
+            System.out.println("9.\tLogout");
             System.out.print("\n");
 
             System.out.print("Enter your choice: ");
