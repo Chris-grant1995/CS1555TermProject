@@ -54,7 +54,7 @@ public class FaceSpace {
         }
     }
     public void initiateFriendship(int id1, int id2) throws SQLException{
-        String statement = "INSERT INTO Friendships VALUES(?, ?, 0)";
+        String statement = "INSERT INTO Friendships VALUES(?, ?, 0, NULL)";
         preparedStatement = connection.prepareStatement(statement);
         preparedStatement.setInt(1,id1);
         preparedStatement.setInt(2,id2);
@@ -62,10 +62,12 @@ public class FaceSpace {
     }
     public boolean establishFriendship(int id1, int id2) throws SQLException{
         try {
-            String statement = "UPDATE Friendships SET confirmed = 1 WHERE senID = ? AND recID = ?";
+            String statement = "UPDATE Friendships SET confirmed = 1, confirmedTime = ? WHERE senID = ? AND recID = ?";
             preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setInt(1, id1);
-            preparedStatement.setInt(2, id2);
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            preparedStatement.setTimestamp(1,time);
+            preparedStatement.setInt(2, id1);
+            preparedStatement.setInt(3, id2);
             preparedStatement.executeUpdate();
             return true;
         }
@@ -281,7 +283,7 @@ public class FaceSpace {
 
     public boolean sendMessageToUser(String subj, String body, int rec, int send){
         try{
-            String statement = "INSERT INTO Messages VALUES(MsgSEQ.nextval,?,?,?,?,?)";
+            String statement = "INSERT INTO Messages VALUES(MsgSEQ.nextval,?,?,?,?,?,0)";
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1,rec);
             preparedStatement.setInt(2,send);
@@ -391,8 +393,8 @@ public class FaceSpace {
     public ArrayList<Integer> searchForUsersWithTerm(String searchTerm) throws SQLException {
         String[] terms =  searchTerm.split("\\s+");
 
-        ArrayList<Integer> results = new ArrayList<>();
-        Set<Integer> hs = new HashSet<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
+        Set<Integer> hs = new HashSet<Integer>();
 
         for (String s : terms) {
             hs.addAll(getUserIDsWithNameOrEmail(s));
@@ -404,9 +406,9 @@ public class FaceSpace {
 
 
     private ArrayList<Integer> getUserIDsWithNameOrEmail(String searchTerm) throws SQLException {
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
 
-        Set<Integer> hs = new HashSet<>();
+        Set<Integer> hs = new HashSet<Integer>();
         hs.addAll(getUserIDsWithEmail(searchTerm));
         hs.addAll(getUserIDsWithName(searchTerm));
 
@@ -421,7 +423,7 @@ public class FaceSpace {
         preparedStatement.setString(1, "%" + name + "%");
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             results.add(resultSet.getInt(1));
         }
@@ -435,7 +437,7 @@ public class FaceSpace {
         preparedStatement.setString(1, "%" + email + "%");
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             results.add(resultSet.getInt(3));
         }
@@ -455,6 +457,18 @@ public class FaceSpace {
         }
 
         return result;
+    }
+    public boolean deleteAccount(int userID)throws SQLException{
+        //try{
+            String statement = "DELETE FROM Users where userID = ? ";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.executeUpdate();
+            return true;
+       // }
+        //catch (Exception e){
+         //   return false;
+          //  }
     }
 
 
