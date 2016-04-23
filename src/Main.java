@@ -84,7 +84,7 @@ public class Main {
             return;
         }
         ArrayList<String> choices = new ArrayList<String>();
-        for(int i =1; i <10; i++  ){
+        for(int i =1; i <11; i++  ){
             choices.add(i+"");
         }
         while(true){
@@ -97,7 +97,9 @@ public class Main {
             System.out.println("5.\tSend Message");
             System.out.println("6.\tCreate Group");
             System.out.println("7.\tJoin Group");
-            System.out.println("8.\tLogout");
+            System.out.println("8.\tThree Degrees of Friendship");
+            System.out.println("9.\tSearch");
+            System.out.println("10.\tLogout");
             System.out.print("\n");
 
             System.out.print("Enter your choice: ");
@@ -222,6 +224,11 @@ public class Main {
                 }
             }
             else if(input.equals("9")){
+                System.out.print("Enter what you want to search for: ");
+                String searchTerm = scan.nextLine();
+                fs.searchForUsersWithTerm(searchTerm);
+            }
+            else if(input.equals("10")){
                 fs.done();
                 System.exit(0);
             }
