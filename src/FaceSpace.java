@@ -391,8 +391,8 @@ public class FaceSpace {
     public ArrayList<Integer> searchForUsersWithTerm(String searchTerm) throws SQLException {
         String[] terms =  searchTerm.split("\\s+");
 
-        ArrayList<Integer> results = new ArrayList<>();
-        Set<Integer> hs = new HashSet<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
+        Set<Integer> hs = new HashSet<Integer>();
 
         for (String s : terms) {
             hs.addAll(getUserIDsWithNameOrEmail(s));
@@ -404,9 +404,9 @@ public class FaceSpace {
 
 
     private ArrayList<Integer> getUserIDsWithNameOrEmail(String searchTerm) throws SQLException {
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
 
-        Set<Integer> hs = new HashSet<>();
+        Set<Integer> hs = new HashSet<Integer>();
         hs.addAll(getUserIDsWithEmail(searchTerm));
         hs.addAll(getUserIDsWithName(searchTerm));
 
@@ -421,7 +421,7 @@ public class FaceSpace {
         preparedStatement.setString(1, "%" + name + "%");
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             results.add(resultSet.getInt(1));
         }
@@ -435,7 +435,7 @@ public class FaceSpace {
         preparedStatement.setString(1, "%" + email + "%");
         resultSet = preparedStatement.executeQuery();
 
-        ArrayList<Integer> results = new ArrayList<>();
+        ArrayList<Integer> results = new ArrayList<Integer>();
         while (resultSet.next()) {
             results.add(resultSet.getInt(3));
         }
