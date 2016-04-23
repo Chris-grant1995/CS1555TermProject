@@ -226,7 +226,12 @@ public class Main {
             else if(input.equals("9")){
                 System.out.print("Enter what you want to search for: ");
                 String searchTerm = scan.nextLine();
-                fs.searchForUsersWithTerm(searchTerm);
+                ArrayList<Integer> userIDs = fs.searchForUsersWithTerm(searchTerm);
+
+                for (Integer i : userIDs) {
+                    System.out.println(fs.getUserFromUserID(i));
+                }
+
             }
             else if(input.equals("10")){
                 fs.done();
