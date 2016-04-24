@@ -14,6 +14,8 @@ public class Main {
         fs = new FaceSpace();
         scan = new Scanner(System.in);
         userID = 0;
+        String s = "Chris Grant";
+        System.out.println(s.contains("Chris"));
         System.out.println("1. Login");
         System.out.println("2. Create Account");
         System.out.print("Enter your choice: ");
@@ -84,7 +86,7 @@ public class Main {
             return;
         }
         ArrayList<String> choices = new ArrayList<String>();
-        for(int i =1; i <12; i++  ){
+        for(int i =1; i <13; i++  ){
             choices.add(i+"");
         }
         while(true){
@@ -243,6 +245,14 @@ public class Main {
                     System.out.println("Error Occured");
                 }
                 System.exit(0);
+            }
+            else if (input.equals("12")){
+                System.out.println("Enter Search Term: ");
+                String term = scan.nextLine().toLowerCase();
+                System.out.println("UserID \t Name \t Email");
+                if(!fs.chrisSearch(term)){
+                    System.out.println("Error");
+                }
             }
         }
     }

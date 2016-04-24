@@ -446,17 +446,43 @@ public class FaceSpace {
 
         return result;
     }
+
+    public boolean chrisSearch(String searchTerm){
+        try{
+
+           String [] terms = searchTerm.split(" ");
+            for(int i =0; i< terms.length; i++){
+                System.out.println("Results found for " + terms[i]);
+                String statement = "SELECT * FROM Users";
+                preparedStatement = connection.prepareStatement(statement);
+                resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()){
+                    String userID = resultSet.getString(1);
+                    String name = resultSet.getString(2);
+                    String email = resultSet.getString(3);
+                    if(userID.toLowerCase().contains(terms[i]) || name.toLowerCase().contains(terms[i]) || email.toLowerCase().contains(terms[i]) ){
+                        System.out.println(userID + "\t" +name + "\t" +email + "\t" );
+                    }
+                }
+
+            }
+           return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
     public boolean deleteAccount(int userID)throws SQLException{
-        //try{
+        try{
             String statement = "DELETE FROM Users where userID = ? ";
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
             return true;
-       // }
-        //catch (Exception e){
-         //   return false;
-          //  }
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
 
