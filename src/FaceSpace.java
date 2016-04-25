@@ -568,7 +568,7 @@ public class FaceSpace {
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setTimestamp(1,time);
             resultSet = preparedStatement.executeQuery();
-            System.out.println("REC ID \t # RECIEVED");
+            //System.out.println("REC ID \t # RECIEVED");
             while(resultSet.next()){
                 int id = resultSet.getInt(1);
                 int count = resultSet.getInt(2);
@@ -579,7 +579,7 @@ public class FaceSpace {
             preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setTimestamp(1,time);
             resultSet = preparedStatement.executeQuery();
-            System.out.println("Sen ID \t # RECIEVED");
+            //System.out.println("Sen ID \t # RECIEVED");
             while(resultSet.next()){
                 int id = resultSet.getInt(1);
                 int count = resultSet.getInt(2);
