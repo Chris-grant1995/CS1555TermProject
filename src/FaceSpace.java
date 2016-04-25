@@ -557,5 +557,61 @@ public class FaceSpace {
         }
     }
 
+    public boolean topMessages(int users, int months){
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, -months);
+            Timestamp time = new Timestamp(cal.getTimeInMillis());
+
+            HashMap<Integer,Integer> userIDs = new HashMap<Integer, Integer>();
+            String statement = "SELECT recID, count(msgID) FROM Messages WHERE dateSent >= ? GROUP BY recID";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setTimestamp(1,time);
+            resultSet = preparedStatement.executeQuery();
+            System.out.println("REC ID \t # RECIEVED");
+            while(resultSet.next()){
+                int id = resultSet.getInt(1);
+                int count = resultSet.getInt(2);
+                System.out.println(id + "\t" + count);
+                userIDs.put(id,count);
+            }
+            statement = "SELECT senID, count(msgID) FROM Messages WHERE dateSent >= ? GROUP BY senID";
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setTimestamp(1,time);
+            resultSet = preparedStatement.executeQuery();
+            System.out.println("Sen ID \t # RECIEVED");
+            while(resultSet.next()){
+                int id = resultSet.getInt(1);
+                int count = resultSet.getInt(2);
+                System.out.println(id + "\t" + count);
+                int temp =0;
+                if(userIDs.containsKey(id))
+                    temp = userIDs.get(id);
+                userIDs.put(id,temp+count);
+            }
+            System.out.println("Top Messages:");
+            for(int i =0; i<users; i++){
+                int maxVal = -1;
+                int maxKey = -1;
+                Iterator<Integer> keys = userIDs.keySet().iterator();
+                while(keys.hasNext()){
+                    int tempKey = keys.next();
+                    int tempVal = userIDs.get(tempKey);
+                    if(tempVal > maxVal){
+                        maxVal = tempVal;
+                        maxKey = tempKey;
+                    }
+                }
+                System.out.println(getNameFromID(maxKey) + "\t" + maxVal);
+                userIDs.remove(maxKey);
+            }
+            return true;
+        }
+        catch (Exception e){
+            //e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

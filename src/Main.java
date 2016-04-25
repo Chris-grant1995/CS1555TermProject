@@ -14,8 +14,6 @@ public class Main {
         fs = new FaceSpace();
         scan = new Scanner(System.in);
         userID = 0;
-        String s = "Chris Grant";
-        System.out.println(s.contains("Chris"));
         System.out.println("1. Login");
         System.out.println("2. Create Account");
         System.out.println("3. Run Driver");
@@ -105,8 +103,9 @@ public class Main {
             System.out.println("7.\tJoin Group");
             System.out.println("8.\tThree Degrees of Friendship");
             System.out.println("9.\tSearch");
-            System.out.println("10.\tLogout");
+            System.out.println("10.\tTop Messages");
             System.out.println("11.\tLogout");
+            System.out.println("12.\tDelete Account");
             System.out.print("\n");
 
             System.out.print("Enter your choice: ");
@@ -231,32 +230,34 @@ public class Main {
                 }
             }
             else if(input.equals("9")){
-                System.out.print("Enter what you want to search for: ");
-                String searchTerm = scan.nextLine();
-                ArrayList<Integer> userIDs = fs.searchForUsersWithTerm(searchTerm);
-
-                for (Integer i : userIDs) {
-                    System.out.println(fs.getUserFromUserID(i));
-                }
-
-            }
-            else if(input.equals("10")){
-                fs.done();
-                System.exit(0);
-            }
-            else if(input.equals("11")){
-                if(!fs.deleteAccount(userID)){
-                    System.out.println("Error Occured");
-                }
-                System.exit(0);
-            }
-            else if (input.equals("12")){
                 System.out.println("Enter Search Term: ");
                 String term = scan.nextLine().toLowerCase();
                 System.out.println("UserID \t Name \t Email");
                 if(!fs.chrisSearch(term)){
                     System.out.println("Error");
                 }
+
+            }
+            else if(input.equals("10")){
+                System.out.println("How many users: ");
+                int users = scan.nextInt();
+                System.out.println("Over How many months: ");
+                int months = scan.nextInt();
+                if(!fs.topMessages(users,months)){
+                    System.out.println("Error Occured");
+                }
+            }
+            else if(input.equals("11")){
+                fs.done();
+                System.exit(0);
+
+            }
+            else if (input.equals("12")){
+                if(!fs.deleteAccount(userID)){
+                    System.out.println("Error Occured");
+                }
+                fs.done();
+                System.exit(0);
             }
         }
     }
