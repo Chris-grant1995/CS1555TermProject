@@ -9,6 +9,9 @@ import java.util.*;
 import java.util.Date;
 
 import oracle.jdbc.*;
+//import com.sun.org.apache.xpath.internal.operations.String;
+
+import javax.sound.midi.SysexMessage;
 
 public class FaceSpace {
     Connection connection;
@@ -23,9 +26,78 @@ public class FaceSpace {
         String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
         connection = DriverManager.getConnection(url, username, password);
         System.out.println("Sucessfully Connected");
-
     }
-    public boolean createUser(String name, String email,String dob  ) throws SQLException{
+
+
+    public void runDriver() throws SQLException {
+        String[] fnames = {"Jordon", "Bobby", "Michelle", "Andrea",
+        "Chris", "Elai", "George"};
+
+        String[] lnames = {"Grant", "Rappoport", "Kindler", "Sammson", "Bobbyfishyhead",
+        "Liquamidic","Saucypan", "Readingrainbow", "Joshua", "Herring"};
+
+        Random rand = new Random();
+        String fnameOne = fnames[rand.nextInt(fnames.length)];
+        String lnameOne = lnames[rand.nextInt(lnames.length)];
+        String emailOne = fnameOne + "." + lnameOne + "@gmail.com";
+
+        System.out.println("CREATING USER 1: " + emailOne);
+        createUser(fnameOne + " " + lnameOne, emailOne, "1995-03-04");
+        int userOneID = getIDFromEmail(emailOne);
+
+        String fnameTwo = fnames[rand.nextInt(fnames.length)];
+        String lnameTwo = lnames[rand.nextInt(lnames.length)];
+        String emailTwo = fnameTwo + "." + lnameTwo + "@gmail.com";
+
+        System.out.println("CREATING USER 2: " + emailTwo);
+        createUser(fnameTwo + " " + lnameTwo, emailTwo, "1995-03-04");
+        int userTwoID = getIDFromEmail(emailTwo);
+
+        System.out.println("User 1 searching for user 2");
+        ArrayList<Integer> userIDs = searchForUsersWithTerm(fnameTwo);
+        for (Integer i : userIDs) {
+            System.out.println(getUserFromUserID(i));
+        }
+
+        System.out.println("User 1 sending Friendship request to user 2");
+        establishFriendship(userOneID, userTwoID);
+
+        System.out.println("Printing Friends / Invitations as User 2");
+        ArrayList<Integer> friends = getFriendsUserIDs(userTwoID);
+        ArrayList<Integer> pending = getPendingFriendsUserIDs(userTwoID);
+        for(int i =0; i< friends.size(); i++){
+            int id = friends.get(i);
+            System.out.println(getUserFromUserID(id) + "\t Friends");
+        }
+        for(int i =0; i<pending.size(); i++){
+            int id = pending.get(i);
+            System.out.println(getUserFromUserID(id) + "\t Pending");
+        }
+
+        System.out.println("User 2 Confirming User 1 friendship request.");
+        establishFriendship(userTwoID, userOneID);
+
+
+        System.out.println("User 1 sending messages to User 2");
+        sendMessageToUser("Message 1", "THIS MESSAGE IS FROM USER 1 TO USER 2", userTwoID, userOneID);
+        sendMessageToUser("Message 2", "THIS IS ANOTHER MESSAGE THAT IS FROM USER 1 TO USER 2", userTwoID, userOneID);
+        sendMessageToUser("Message 3", "THIS IS THE FINAL MESSAGE FROM USER 1 TO USER 2", userTwoID, userOneID);
+
+
+        System.out.println("User 2 Viewing Message Inbox");
+        displayMessages(userTwoID);
+
+
+        System.out.println("User 1 Is Creating a Group");
+        createGroup("Cool Group", "Group for User 1 and User 2", 10);
+        int groupID = getGroupIDFromName("Cool Group");
+        System.out.println("GROUP ID: " + Integer.toString(groupID));
+
+        System.out.println("User 1 adding User 2 to groups");
+        addToGroup(groupID, userTwoID);
+    }
+
+    public boolean createUser(String name, String email,String dob) throws SQLException{
         try {
             System.out.println("Creating New User");
             String statement = "INSERT INTO Users VALUES(UsersSEQ.nextval,?, ?, ?, ?)";

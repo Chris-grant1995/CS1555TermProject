@@ -18,9 +18,11 @@ public class Main {
         System.out.println(s.contains("Chris"));
         System.out.println("1. Login");
         System.out.println("2. Create Account");
+        System.out.println("3. Run Driver");
+
         System.out.print("Enter your choice: ");
         String input = scan.nextLine();
-        while(!input.equals("1") && !input.equals("2") ){
+        while(!input.equals("1") && !input.equals("2") && !input.equals("3")){
             System.out.print("Invalid Choice, Enter your choice again: ");
             input = scan.nextLine();
         }
@@ -38,7 +40,7 @@ public class Main {
             loggedIn();
 
         }
-        else{
+        else if (input.equals("2")){
             System.out.print("Enter your Name: ");
             name = scan.nextLine();
 
@@ -78,6 +80,8 @@ public class Main {
             userID = fs.getIDFromEmail(email);
             loggedIn();
 
+        } else {
+            fs.runDriver();
         }
     }
     public static void loggedIn() throws SQLException{
