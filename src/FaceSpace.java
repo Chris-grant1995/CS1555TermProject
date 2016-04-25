@@ -572,7 +572,7 @@ public class FaceSpace {
             while(resultSet.next()){
                 int id = resultSet.getInt(1);
                 int count = resultSet.getInt(2);
-                System.out.println(id + "\t" + count);
+                //System.out.println(id + "\t" + count);
                 userIDs.put(id,count);
             }
             statement = "SELECT senID, count(msgID) FROM Messages WHERE dateSent >= ? GROUP BY senID";
@@ -583,7 +583,7 @@ public class FaceSpace {
             while(resultSet.next()){
                 int id = resultSet.getInt(1);
                 int count = resultSet.getInt(2);
-                System.out.println(id + "\t" + count);
+                //System.out.println(id + "\t" + count);
                 int temp =0;
                 if(userIDs.containsKey(id))
                     temp = userIDs.get(id);
