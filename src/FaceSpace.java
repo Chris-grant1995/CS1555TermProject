@@ -39,28 +39,42 @@ public class FaceSpace {
         Random rand = new Random();
         String fnameOne = fnames[rand.nextInt(fnames.length)];
         String lnameOne = lnames[rand.nextInt(lnames.length)];
-        String emailOne = fnameOne + "." + lnameOne + "@gmail.com";
+        String emailOne = fnameOne.toLowerCase() + "." + lnameOne.toLowerCase() + "@gmail.com";
 
         System.out.println("CREATING USER 1: " + emailOne);
-        createUser(fnameOne + " " + lnameOne, emailOne, "1995-03-04");
+        createUser(fnameOne + " " + lnameOne, emailOne, "1995-03-04 00:00:00");
+        System.out.println();
+
         int userOneID = getIDFromEmail(emailOne);
 
         String fnameTwo = fnames[rand.nextInt(fnames.length)];
         String lnameTwo = lnames[rand.nextInt(lnames.length)];
-        String emailTwo = fnameTwo + "." + lnameTwo + "@gmail.com";
+        String emailTwo = fnameTwo.toLowerCase() + "." + lnameTwo.toLowerCase() + "@gmail.com";
 
         System.out.println("CREATING USER 2: " + emailTwo);
-        createUser(fnameTwo + " " + lnameTwo, emailTwo, "1995-03-04");
+        createUser(fnameTwo + " " + lnameTwo, emailTwo, "1995-03-04 00:00:00");
         int userTwoID = getIDFromEmail(emailTwo);
+        System.out.println();
 
-        System.out.println("User 1 searching for user 2");
-        ArrayList<Integer> userIDs = searchForUsersWithTerm(fnameTwo);
-        for (Integer i : userIDs) {
-            System.out.println(getUserFromUserID(i));
-        }
+
+        System.out.println("Establishing Friendship between Robert Jones and User 2");
+        int robertUserID = getIDFromEmail("robertjones@gmail.com");
+        initiateFriendship(robertUserID, userTwoID);
+        establishFriendship(userTwoID, robertUserID);
+        System.out.println();
+
+        System.out.println("User 1 searching for Users named George");
+        chrisSearch("George");
+        System.out.println();
+
+        System.out.println("User 1 calling three degrees on Robert Jones");
+        threeDegrees(userOneID, robertUserID);
+        System.out.println();
 
         System.out.println("User 1 sending Friendship request to user 2");
-        establishFriendship(userOneID, userTwoID);
+        initiateFriendship(userOneID, userTwoID);
+        System.out.println();
+
 
         System.out.println("Printing Friends / Invitations as User 2");
         ArrayList<Integer> friends = getFriendsUserIDs(userTwoID);
@@ -73,9 +87,24 @@ public class FaceSpace {
             int id = pending.get(i);
             System.out.println(getUserFromUserID(id) + "\t Pending");
         }
+        System.out.println();
 
         System.out.println("User 2 Confirming User 1 friendship request.");
         establishFriendship(userTwoID, userOneID);
+        System.out.println();
+
+        System.out.println("Printing Friends / Invitations as User 2 after friendship established.");
+        friends = getFriendsUserIDs(userTwoID);
+        pending = getPendingFriendsUserIDs(userTwoID);
+        for(int i =0; i< friends.size(); i++){
+            int id = friends.get(i);
+            System.out.println(getUserFromUserID(id) + "\t Friends");
+        }
+        for(int i =0; i<pending.size(); i++){
+            int id = pending.get(i);
+            System.out.println(getUserFromUserID(id) + "\t Pending");
+        }
+        System.out.println();
 
 
         System.out.println("User 1 sending messages to User 2");
@@ -86,15 +115,19 @@ public class FaceSpace {
 
         System.out.println("User 2 Viewing Message Inbox");
         displayMessages(userTwoID);
+        System.out.println();
 
 
         System.out.println("User 1 Is Creating a Group");
         createGroup("Cool Group", "Group for User 1 and User 2", 10);
         int groupID = getGroupIDFromName("Cool Group");
         System.out.println("GROUP ID: " + Integer.toString(groupID));
+        System.out.println();
 
         System.out.println("User 1 adding User 2 to groups");
         addToGroup(groupID, userTwoID);
+        System.out.println();
+
     }
 
     public boolean createUser(String name, String email,String dob) throws SQLException{
@@ -122,6 +155,7 @@ public class FaceSpace {
             return true;
         }
         catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -520,6 +554,7 @@ public class FaceSpace {
     }
 
     public boolean chrisSearch(String searchTerm){
+        searchTerm = searchTerm.toLowerCase();
         try{
 
            String [] terms = searchTerm.split(" ");
