@@ -253,11 +253,16 @@ public class Main {
 
             }
             else if (input.equals("12")){
-                if(!fs.deleteAccount(userID)){
-                    System.out.println("Error Occured");
+                System.out.print("Do you really want to delete your account? (Yes or No)");
+                String choice = scan.nextLine();
+                if(choice.contains("y") | choice.contains("Y")){
+                    if(!fs.deleteAccount(userID)){
+                        System.out.println("Error Occured");
+                    }
+                    fs.done();
+                    System.exit(0);
                 }
-                fs.done();
-                System.exit(0);
+
             }
         }
     }

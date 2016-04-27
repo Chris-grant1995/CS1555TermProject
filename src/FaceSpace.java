@@ -95,6 +95,12 @@ public class FaceSpace {
 
         System.out.println("User 1 adding User 2 to groups");
         addToGroup(groupID, userTwoID);
+
+        System.out.println("Searching for Relevant database entries containing: \"Chris 11\"");
+        an searchForUser("Chris 11");
+
+        System.out.println("Searching for Relevant database entries containing: \"Chris 11\"");
+        //threeDegrees()
     }
 
     public boolean createUser(String name, String email,String dob) throws SQLException{
@@ -519,7 +525,7 @@ public class FaceSpace {
         return result;
     }
 
-    public boolean chrisSearch(String searchTerm){
+    public boolean searchForUser(String searchTerm){
         try{
 
            String [] terms = searchTerm.split(" ");
@@ -602,7 +608,8 @@ public class FaceSpace {
                         maxKey = tempKey;
                     }
                 }
-                System.out.println(getNameFromID(maxKey) + "\t" + maxVal);
+                //System.out.println(maxKey);
+                System.out.println(getNameFromID(maxKey+1) + "\t" + maxVal);
                 userIDs.remove(maxKey);
             }
             return true;
