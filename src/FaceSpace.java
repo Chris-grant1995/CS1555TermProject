@@ -34,7 +34,7 @@ public class FaceSpace {
         "Chris", "Elai", "George"};
 
         String[] lnames = {"Grant", "Rappoport", "Kindler", "Sammson", "Bobbyfishyhead",
-        "Liquamidic","Saucypan", "Readingrainbow", "Joshua", "Herring"};
+        "Lickayadoh","Saucypan", "Readingrainbow", "Joshua", "Herring"};
 
         Random rand = new Random();
         String fnameOne = fnames[rand.nextInt(fnames.length)];
@@ -60,19 +60,16 @@ public class FaceSpace {
         System.out.println("Establishing Friendship between Robert Jones and User 2");
         int robertUserID = getIDFromEmail("robertjones@gmail.com");
         initiateFriendship(robertUserID, userTwoID);
-        establishFriendship(userTwoID, robertUserID);
+        establishFriendship(robertUserID, userTwoID);
         System.out.println();
 
         System.out.println("User 1 searching for Users named George");
         chrisSearch("George");
         System.out.println();
 
-        System.out.println("User 1 calling three degrees on Robert Jones");
-        threeDegrees(userOneID, robertUserID);
-        System.out.println();
 
         System.out.println("User 1 sending Friendship request to user 2");
-        initiateFriendship(userOneID, userTwoID);
+        initiateFriendship(userTwoID, userOneID);
         System.out.println();
 
 
@@ -106,6 +103,9 @@ public class FaceSpace {
         }
         System.out.println();
 
+        System.out.println("User 1 calling three degrees on Robert Jones");
+        threeDegrees(userOneID, robertUserID);
+        System.out.println();
 
         System.out.println("User 1 sending messages to User 2");
         sendMessageToUser("Message 1", "THIS MESSAGE IS FROM USER 1 TO USER 2", userTwoID, userOneID);
@@ -647,6 +647,4 @@ public class FaceSpace {
             return false;
         }
     }
-
-
 }
