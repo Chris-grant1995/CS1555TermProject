@@ -126,6 +126,15 @@ public class FaceSpace {
 
         System.out.println("User 1 adding User 2 to groups");
         addToGroup(groupID, userTwoID);
+
+        System.out.println("Displaying top messages for 5 users over 1 month");
+        topMessages(5,1);
+
+        System.out.println("Deleting user1");
+        deleteAccount(userOneID);
+
+        System.out.println("Deleting user2");
+        deleteAccount(userTwoID);
     }
 
     public boolean createUser(String name, String email,String dob) throws SQLException{
