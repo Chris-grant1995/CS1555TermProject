@@ -233,7 +233,7 @@ public class Main {
                 System.out.println("Enter Search Term: ");
                 String term = scan.nextLine().toLowerCase();
                 System.out.println("UserID \t Name \t Email");
-                if(!fs.chrisSearch(term)){
+                if(!fs.searchForUser(term)){
                     System.out.println("Error");
                 }
 

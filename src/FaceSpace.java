@@ -550,7 +550,7 @@ public class FaceSpace {
 
         return result;
     }
-    
+
     public boolean searchForUser(String searchTerm){
         searchTerm = searchTerm.toLowerCase();
         try{
